@@ -1,0 +1,718 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="KfpWeb.Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'kfp.joeadmin.CommishAddress' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="CommishAddress">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="dateCreated" />
+            <PropertyRef Name="message" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="dateCreated" Type="datetime" Nullable="false" />
+          <Property Name="message" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Game">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="week" Type="int" Nullable="false" />
+          <Property Name="kickoff" Type="datetime" Nullable="false" />
+          <Property Name="homeTeamId" Type="nvarchar" MaxLength="3" Nullable="false" />
+          <Property Name="awayTeamId" Type="nvarchar" MaxLength="3" Nullable="false" />
+          <Property Name="favoriteTeamId" Type="nvarchar" MaxLength="3" />
+          <Property Name="spread" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="homeScore" Type="int" />
+          <Property Name="awayScore" Type="int" />
+          <Property Name="winningTeamId" Type="nvarchar" MaxLength="3" />
+          <Property Name="dateModified" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MondayGuess">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userId" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="gameId" Type="int" Nullable="false" />
+          <Property Name="guess" Type="int" Nullable="false" />
+          <Property Name="dateCreated" Type="datetime" Nullable="false" />
+          <Property Name="userCreatedId" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="deleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pick">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="week" Type="int" Nullable="false" />
+          <Property Name="userId" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="pick5TeamId" Type="nvarchar" MaxLength="3" Nullable="false" />
+          <Property Name="pick3TeamId" Type="nvarchar" MaxLength="3" Nullable="false" />
+          <Property Name="pick2TeamId" Type="nvarchar" MaxLength="3" Nullable="false" />
+          <Property Name="dateCreated" Type="datetime" Nullable="false" />
+          <Property Name="userCreatedId" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="deleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Team">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="nvarchar" MaxLength="3" Nullable="false" />
+          <Property Name="city" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="logoUrl" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="email" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="nickname" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="pictureUrl" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="location" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="status" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="pastChampion" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="role" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="password" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="sendReminder" Type="bit" Nullable="false" />
+          <Property Name="paid" Type="bit" Nullable="false" />
+          <Property Name="active" Type="bit" Nullable="false" />
+          <Property Name="lastActive" Type="date" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Game__awayTeamId__4316F928">
+          <End Role="Team" Type="Self.Team" Multiplicity="1" />
+          <End Role="Game" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="awayTeamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Game__favoriteTe__440B1D61">
+          <End Role="Team" Type="Self.Team" Multiplicity="0..1" />
+          <End Role="Game" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="favoriteTeamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Game__homeTeamId__4222D4EF">
+          <End Role="Team" Type="Self.Team" Multiplicity="1" />
+          <End Role="Game" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="homeTeamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Game__winningTea__45F365D3">
+          <End Role="Team" Type="Self.Team" Multiplicity="0..1" />
+          <End Role="Game" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="winningTeamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MondayGue__gameI__60A75C0F">
+          <End Role="Game" Type="Self.Game" Multiplicity="1" />
+          <End Role="MondayGuess" Type="Self.MondayGuess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Game">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="MondayGuess">
+              <PropertyRef Name="gameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MondayGue__userC__6383C8BA">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="MondayGuess" Type="Self.MondayGuess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="MondayGuess">
+              <PropertyRef Name="userCreatedId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MondayGue__userI__5FB337D6">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="MondayGuess" Type="Self.MondayGuess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="MondayGuess">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pick__pick2TeamI__59FA5E80">
+          <End Role="Team" Type="Self.Team" Multiplicity="1" />
+          <End Role="Pick" Type="Self.Pick" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Pick">
+              <PropertyRef Name="pick2TeamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pick__pick3TeamI__59063A47">
+          <End Role="Team" Type="Self.Team" Multiplicity="1" />
+          <End Role="Pick" Type="Self.Pick" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Pick">
+              <PropertyRef Name="pick3TeamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pick__pick5TeamI__5812160E">
+          <End Role="Team" Type="Self.Team" Multiplicity="1" />
+          <End Role="Pick" Type="Self.Pick" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Pick">
+              <PropertyRef Name="pick5TeamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pick__userCreate__5BE2A6F2">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Pick" Type="Self.Pick" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Pick">
+              <PropertyRef Name="userCreatedId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pick__userId__571DF1D5">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Pick" Type="Self.Pick" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Pick">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="KfpWebModelsStoreContainer">
+          <EntitySet Name="Game" EntityType="Self.Game" Schema="joeadmin" store:Type="Tables" />
+          <EntitySet Name="MondayGuess" EntityType="Self.MondayGuess" Schema="joeadmin" store:Type="Tables" />
+          <EntitySet Name="Pick" EntityType="Self.Pick" Schema="joeadmin" store:Type="Tables" />
+          <EntitySet Name="Team" EntityType="Self.Team" Schema="joeadmin" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="joeadmin" store:Type="Tables" />
+          <EntitySet Name="CommishAddress" EntityType="Self.CommishAddress" store:Type="Tables" store:Schema="joeadmin">
+            <DefiningQuery>SELECT 
+    [CommishAddress].[id] AS [id], 
+    [CommishAddress].[dateCreated] AS [dateCreated], 
+    [CommishAddress].[message] AS [message]
+    FROM [joeadmin].[CommishAddress] AS [CommishAddress]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__Game__awayTeamId__4316F928" Association="Self.FK__Game__awayTeamId__4316F928">
+            <End Role="Team" EntitySet="Team" />
+            <End Role="Game" EntitySet="Game" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Game__favoriteTe__440B1D61" Association="Self.FK__Game__favoriteTe__440B1D61">
+            <End Role="Team" EntitySet="Team" />
+            <End Role="Game" EntitySet="Game" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Game__homeTeamId__4222D4EF" Association="Self.FK__Game__homeTeamId__4222D4EF">
+            <End Role="Team" EntitySet="Team" />
+            <End Role="Game" EntitySet="Game" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Game__winningTea__45F365D3" Association="Self.FK__Game__winningTea__45F365D3">
+            <End Role="Team" EntitySet="Team" />
+            <End Role="Game" EntitySet="Game" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MondayGue__gameI__60A75C0F" Association="Self.FK__MondayGue__gameI__60A75C0F">
+            <End Role="Game" EntitySet="Game" />
+            <End Role="MondayGuess" EntitySet="MondayGuess" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MondayGue__userC__6383C8BA" Association="Self.FK__MondayGue__userC__6383C8BA">
+            <End Role="User" EntitySet="User" />
+            <End Role="MondayGuess" EntitySet="MondayGuess" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MondayGue__userI__5FB337D6" Association="Self.FK__MondayGue__userI__5FB337D6">
+            <End Role="User" EntitySet="User" />
+            <End Role="MondayGuess" EntitySet="MondayGuess" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pick__pick2TeamI__59FA5E80" Association="Self.FK__Pick__pick2TeamI__59FA5E80">
+            <End Role="Team" EntitySet="Team" />
+            <End Role="Pick" EntitySet="Pick" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pick__pick3TeamI__59063A47" Association="Self.FK__Pick__pick3TeamI__59063A47">
+            <End Role="Team" EntitySet="Team" />
+            <End Role="Pick" EntitySet="Pick" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pick__pick5TeamI__5812160E" Association="Self.FK__Pick__pick5TeamI__5812160E">
+            <End Role="Team" EntitySet="Team" />
+            <End Role="Pick" EntitySet="Pick" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pick__userCreate__5BE2A6F2" Association="Self.FK__Pick__userCreate__5BE2A6F2">
+            <End Role="User" EntitySet="User" />
+            <End Role="Pick" EntitySet="Pick" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pick__userId__571DF1D5" Association="Self.FK__Pick__userId__571DF1D5">
+            <End Role="User" EntitySet="User" />
+            <End Role="Pick" EntitySet="Pick" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="KfpWeb.Models" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Game">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="week" Type="Int32" Nullable="false" />
+          <Property Name="kickoff" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="homeTeamId" Type="String" MaxLength="3" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="awayTeamId" Type="String" MaxLength="3" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="favoriteTeamId" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="spread" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="homeScore" Type="Int32" />
+          <Property Name="awayScore" Type="Int32" />
+          <Property Name="winningTeamId" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="dateModified" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="AwayTeam" Relationship="Self.FK__Game__awayTeamId__4316F928" FromRole="Game" ToRole="Team" />
+          <NavigationProperty Name="FavoriteTeam" Relationship="Self.FK__Game__favoriteTe__440B1D61" FromRole="Game" ToRole="Team" />
+          <NavigationProperty Name="HomeTeam" Relationship="Self.FK__Game__homeTeamId__4222D4EF" FromRole="Game" ToRole="Team" />
+          <NavigationProperty Name="WinningTeam" Relationship="Self.FK__Game__winningTea__45F365D3" FromRole="Game" ToRole="Team" />
+          <NavigationProperty Name="MondayGuesses" Relationship="Self.FK__MondayGue__gameI__60A75C0F" FromRole="Game" ToRole="MondayGuess" />
+        </EntityType>
+        <EntityType Name="MondayGuess">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userId" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="gameId" Type="Int32" Nullable="false" />
+          <Property Name="guess" Type="Int32" Nullable="false" />
+          <Property Name="dateCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="userCreatedId" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="deleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Game" Relationship="Self.FK__MondayGue__gameI__60A75C0F" FromRole="MondayGuess" ToRole="Game" />
+          <NavigationProperty Name="UserCreated" Relationship="Self.FK__MondayGue__userC__6383C8BA" FromRole="MondayGuess" ToRole="User" />
+          <NavigationProperty Name="User" Relationship="Self.FK__MondayGue__userI__5FB337D6" FromRole="MondayGuess" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Pick">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="week" Type="Int32" Nullable="false" />
+          <Property Name="userId" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="pick5TeamId" Type="String" MaxLength="3" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="pick3TeamId" Type="String" MaxLength="3" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="pick2TeamId" Type="String" MaxLength="3" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="dateCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="userCreatedId" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="deleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Pick2Team" Relationship="Self.FK__Pick__pick2TeamI__59FA5E80" FromRole="Pick" ToRole="Team" />
+          <NavigationProperty Name="Pick3Team" Relationship="Self.FK__Pick__pick3TeamI__59063A47" FromRole="Pick" ToRole="Team" />
+          <NavigationProperty Name="Pick5Team" Relationship="Self.FK__Pick__pick5TeamI__5812160E" FromRole="Pick" ToRole="Team" />
+          <NavigationProperty Name="UserCreated" Relationship="Self.FK__Pick__userCreate__5BE2A6F2" FromRole="Pick" ToRole="User" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Pick__userId__571DF1D5" FromRole="Pick" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Team">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="String" MaxLength="3" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="city" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="logoUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AwayGames" Relationship="Self.FK__Game__awayTeamId__4316F928" FromRole="Team" ToRole="Game" />
+          <NavigationProperty Name="FavoriteGames" Relationship="Self.FK__Game__favoriteTe__440B1D61" FromRole="Team" ToRole="Game" />
+          <NavigationProperty Name="HomeGames" Relationship="Self.FK__Game__homeTeamId__4222D4EF" FromRole="Team" ToRole="Game" />
+          <NavigationProperty Name="WinningGames" Relationship="Self.FK__Game__winningTea__45F365D3" FromRole="Team" ToRole="Game" />
+          <NavigationProperty Name="Points2Picks" Relationship="Self.FK__Pick__pick2TeamI__59FA5E80" FromRole="Team" ToRole="Pick" />
+          <NavigationProperty Name="Points3Picks" Relationship="Self.FK__Pick__pick3TeamI__59063A47" FromRole="Team" ToRole="Pick" />
+          <NavigationProperty Name="Points5Picks" Relationship="Self.FK__Pick__pick5TeamI__5812160E" FromRole="Team" ToRole="Pick" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="nickname" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="pictureUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="location" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="pastChampion" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="role" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="sendReminder" Type="Boolean" Nullable="false" />
+          <Property Name="paid" Type="Boolean" Nullable="false" />
+          <Property Name="active" Type="Boolean" Nullable="false" />
+          <Property Name="lastActive" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="MondayGuessesCreated" Relationship="Self.FK__MondayGue__userC__6383C8BA" FromRole="User" ToRole="MondayGuess" />
+          <NavigationProperty Name="MondayGuesses" Relationship="Self.FK__MondayGue__userI__5FB337D6" FromRole="User" ToRole="MondayGuess" />
+          <NavigationProperty Name="PicksCreated" Relationship="Self.FK__Pick__userCreate__5BE2A6F2" FromRole="User" ToRole="Pick" />
+          <NavigationProperty Name="Picks" Relationship="Self.FK__Pick__userId__571DF1D5" FromRole="User" ToRole="Pick" />
+        </EntityType>
+        <EntityType Name="CommishAddress">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="dateCreated" />
+            <PropertyRef Name="message" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="dateCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="message" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Game__awayTeamId__4316F928">
+          <End Role="Team" Type="Self.Team" Multiplicity="1" />
+          <End Role="Game" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="awayTeamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Game__favoriteTe__440B1D61">
+          <End Role="Team" Type="Self.Team" Multiplicity="0..1" />
+          <End Role="Game" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="favoriteTeamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Game__homeTeamId__4222D4EF">
+          <End Role="Team" Type="Self.Team" Multiplicity="1" />
+          <End Role="Game" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="homeTeamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Game__winningTea__45F365D3">
+          <End Role="Team" Type="Self.Team" Multiplicity="0..1" />
+          <End Role="Game" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="winningTeamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MondayGue__gameI__60A75C0F">
+          <End Role="Game" Type="Self.Game" Multiplicity="1" />
+          <End Role="MondayGuess" Type="Self.MondayGuess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Game">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="MondayGuess">
+              <PropertyRef Name="gameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MondayGue__userC__6383C8BA">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="MondayGuess" Type="Self.MondayGuess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="MondayGuess">
+              <PropertyRef Name="userCreatedId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MondayGue__userI__5FB337D6">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="MondayGuess" Type="Self.MondayGuess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="MondayGuess">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pick__pick2TeamI__59FA5E80">
+          <End Role="Team" Type="Self.Team" Multiplicity="1" />
+          <End Role="Pick" Type="Self.Pick" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Pick">
+              <PropertyRef Name="pick2TeamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pick__pick3TeamI__59063A47">
+          <End Role="Team" Type="Self.Team" Multiplicity="1" />
+          <End Role="Pick" Type="Self.Pick" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Pick">
+              <PropertyRef Name="pick3TeamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pick__pick5TeamI__5812160E">
+          <End Role="Team" Type="Self.Team" Multiplicity="1" />
+          <End Role="Pick" Type="Self.Pick" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Pick">
+              <PropertyRef Name="pick5TeamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pick__userCreate__5BE2A6F2">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Pick" Type="Self.Pick" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Pick">
+              <PropertyRef Name="userCreatedId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pick__userId__571DF1D5">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Pick" Type="Self.Pick" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Pick">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="kfpEntities" annotation:LazyLoadingEnabled="false">
+          <EntitySet Name="Games" EntityType="Self.Game" />
+          <EntitySet Name="MondayGuesses" EntityType="Self.MondayGuess" />
+          <EntitySet Name="Picks" EntityType="Self.Pick" />
+          <EntitySet Name="Teams" EntityType="Self.Team" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="CommishAddresses" EntityType="Self.CommishAddress" />
+          <AssociationSet Name="FK__Game__awayTeamId__4316F928" Association="Self.FK__Game__awayTeamId__4316F928">
+            <End Role="Team" EntitySet="Teams" />
+            <End Role="Game" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Game__favoriteTe__440B1D61" Association="Self.FK__Game__favoriteTe__440B1D61">
+            <End Role="Team" EntitySet="Teams" />
+            <End Role="Game" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Game__homeTeamId__4222D4EF" Association="Self.FK__Game__homeTeamId__4222D4EF">
+            <End Role="Team" EntitySet="Teams" />
+            <End Role="Game" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Game__winningTea__45F365D3" Association="Self.FK__Game__winningTea__45F365D3">
+            <End Role="Team" EntitySet="Teams" />
+            <End Role="Game" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MondayGue__gameI__60A75C0F" Association="Self.FK__MondayGue__gameI__60A75C0F">
+            <End Role="Game" EntitySet="Games" />
+            <End Role="MondayGuess" EntitySet="MondayGuesses" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MondayGue__userC__6383C8BA" Association="Self.FK__MondayGue__userC__6383C8BA">
+            <End Role="User" EntitySet="Users" />
+            <End Role="MondayGuess" EntitySet="MondayGuesses" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MondayGue__userI__5FB337D6" Association="Self.FK__MondayGue__userI__5FB337D6">
+            <End Role="User" EntitySet="Users" />
+            <End Role="MondayGuess" EntitySet="MondayGuesses" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pick__pick2TeamI__59FA5E80" Association="Self.FK__Pick__pick2TeamI__59FA5E80">
+            <End Role="Team" EntitySet="Teams" />
+            <End Role="Pick" EntitySet="Picks" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pick__pick3TeamI__59063A47" Association="Self.FK__Pick__pick3TeamI__59063A47">
+            <End Role="Team" EntitySet="Teams" />
+            <End Role="Pick" EntitySet="Picks" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pick__pick5TeamI__5812160E" Association="Self.FK__Pick__pick5TeamI__5812160E">
+            <End Role="Team" EntitySet="Teams" />
+            <End Role="Pick" EntitySet="Picks" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pick__userCreate__5BE2A6F2" Association="Self.FK__Pick__userCreate__5BE2A6F2">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Pick" EntitySet="Picks" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pick__userId__571DF1D5" Association="Self.FK__Pick__userId__571DF1D5">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Pick" EntitySet="Picks" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="KfpWebModelsStoreContainer" CdmEntityContainer="kfpEntities">
+          <EntitySetMapping Name="Games">
+            <EntityTypeMapping TypeName="KfpWeb.Models.Game">
+              <MappingFragment StoreEntitySet="Game">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="week" ColumnName="week" />
+                <ScalarProperty Name="kickoff" ColumnName="kickoff" />
+                <ScalarProperty Name="homeTeamId" ColumnName="homeTeamId" />
+                <ScalarProperty Name="awayTeamId" ColumnName="awayTeamId" />
+                <ScalarProperty Name="favoriteTeamId" ColumnName="favoriteTeamId" />
+                <ScalarProperty Name="spread" ColumnName="spread" />
+                <ScalarProperty Name="homeScore" ColumnName="homeScore" />
+                <ScalarProperty Name="awayScore" ColumnName="awayScore" />
+                <ScalarProperty Name="winningTeamId" ColumnName="winningTeamId" />
+                <ScalarProperty Name="dateModified" ColumnName="dateModified" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MondayGuesses">
+            <EntityTypeMapping TypeName="KfpWeb.Models.MondayGuess">
+              <MappingFragment StoreEntitySet="MondayGuess">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="gameId" ColumnName="gameId" />
+                <ScalarProperty Name="guess" ColumnName="guess" />
+                <ScalarProperty Name="dateCreated" ColumnName="dateCreated" />
+                <ScalarProperty Name="userCreatedId" ColumnName="userCreatedId" />
+                <ScalarProperty Name="deleted" ColumnName="deleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Picks">
+            <EntityTypeMapping TypeName="KfpWeb.Models.Pick">
+              <MappingFragment StoreEntitySet="Pick">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="week" ColumnName="week" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="pick5TeamId" ColumnName="pick5TeamId" />
+                <ScalarProperty Name="pick3TeamId" ColumnName="pick3TeamId" />
+                <ScalarProperty Name="pick2TeamId" ColumnName="pick2TeamId" />
+                <ScalarProperty Name="dateCreated" ColumnName="dateCreated" />
+                <ScalarProperty Name="userCreatedId" ColumnName="userCreatedId" />
+                <ScalarProperty Name="deleted" ColumnName="deleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Teams">
+            <EntityTypeMapping TypeName="KfpWeb.Models.Team">
+              <MappingFragment StoreEntitySet="Team">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="logoUrl" ColumnName="logoUrl" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="KfpWeb.Models.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="nickname" ColumnName="nickname" />
+                <ScalarProperty Name="pictureUrl" ColumnName="pictureUrl" />
+                <ScalarProperty Name="location" ColumnName="location" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="pastChampion" ColumnName="pastChampion" />
+                <ScalarProperty Name="role" ColumnName="role" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="sendReminder" ColumnName="sendReminder" />
+                <ScalarProperty Name="paid" ColumnName="paid" />
+                <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="lastActive" ColumnName="lastActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CommishAddresses">
+            <EntityTypeMapping TypeName="KfpWeb.Models.CommishAddress">
+              <MappingFragment StoreEntitySet="CommishAddress">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="dateCreated" ColumnName="dateCreated" />
+                <ScalarProperty Name="message" ColumnName="message" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
