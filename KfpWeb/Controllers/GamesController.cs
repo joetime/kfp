@@ -26,17 +26,19 @@ namespace KfpWeb.Controllers
         }
 
         /// GET: api/Games/Week/1
-        [Route("api/games/week/{weekId}")]
-        public IQueryable<Game> GetGames(int weekId)
+        [Route("api/games")]
+        public IQueryable<Game> GetGames([FromUri]int week)
         {
             return db.Games
-                .Where(game => game.week == weekId)
+                .Include(game => game.HomeTeam)
+                .Include(game => game.AwayTeam)
+                .Where(game => game.week == week)
                 .OrderBy(game => game.kickoff);
         }
 
         /// GET: api/Games/team/NYG
-        [Route("api/games/team/{teamId}")]
-        public IQueryable<Game> GetGames(string teamId)
+        [Route("api/games")]
+        public IQueryable<Game> GetGames([FromUri]string teamId)
         {
             return db.Games
                 .Where(game => game.homeTeamId == teamId || game.awayTeamId == teamId)

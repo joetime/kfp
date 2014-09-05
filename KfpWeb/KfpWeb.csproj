@@ -201,6 +201,7 @@
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\GamesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PicksController.cs" />
     <Compile Include="Controllers\TeamsController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -252,7 +253,12 @@
     <Content Include="app\app.js" />
     <Content Include="app\login\login.html" />
     <Content Include="app\login\loginCtrl.js" />
-    <Content Include="app\services\auth.js" />
+    <Content Include="app\momentFilter.js" />
+    <Content Include="app\picks\picks.html" />
+    <Content Include="app\picks\picksCtrl.js" />
+    <Content Include="app\services\authSvc.js" />
+    <Content Include="app\services\gameSvc.js" />
+    <Content Include="app\services\pickSvc.js" />
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />

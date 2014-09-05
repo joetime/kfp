@@ -1,5 +1,5 @@
 ﻿angular.module('app',
-    [ 'ngCookies',
+    ['ngCookies',
     'ngResource',
     /*'ngMessages',*/
     'ngRoute',
@@ -9,14 +9,18 @@
 
     function ($locationProvider, $routeProvider) {
 
-    $locationProvider.html5Mode(true);
+        $locationProvider.html5Mode(true);
 
-    $routeProvider
-        .when('/', {
-            templateUrl: 'app/login/login.html',
-            controller: 'loginCtrl'
-        })
-        .otherwise({
-            redirectTo: '/'
-        });
-}]);
+        $routeProvider
+            .when('/', {
+                templateUrl: 'app/picks/picks.html',
+                controller: 'picksCtrl'
+            })
+            .when('/login', {
+                templateUrl: 'app/login/login.html',
+                controller: 'loginCtrl'
+            })
+            .otherwise({
+                redirectTo: '/'
+            });
+    }]);

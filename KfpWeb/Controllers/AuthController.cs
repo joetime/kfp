@@ -25,6 +25,10 @@ namespace KfpWeb.Controllers
             else if (password != user.password)
                 throw new InvalidOperationException("Incorrect Password");
 
+            /// update last access date
+            user.lastActive = DateTime.Now;
+            db.SaveChanges();
+
             return creds;
         }
     }
